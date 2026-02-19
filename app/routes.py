@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from . import models, schemas, security, database, auth
+from . import models, schemas, security, database, auth, ai_service
 
 router = APIRouter()
 
@@ -50,6 +50,19 @@ def login(
 
     return {"access_token": access_token, "token_type": "bearer"}
 
+
 @router.get("/me", response_model=schemas.UserResponse)
 def read_current_user(current_user: models.User = Depends(auth.get_current_user)):
     return current_user
+
+
+@router.post("/ai/analyze", response_model=schemas.AIAnalyzeResponse)
+def analyze_text(
+    request: schemas.AIAnalyzeRequest,
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    """
+    Analyze text using external AI service.
+    Requires authentication.
+    """
+    return ai_service.analyze_text(request.text)
