@@ -1,88 +1,60 @@
-# Scalable Python API
+# Text Intelligence API
 
-This repository demonstrates a structured backend service built using FastAPI. The project is intentionally organized to reflect clean architecture principles, secure authentication practices, and practical API design.
-
-Rather than a simple CRUD example, this service models a production-style backend foundation with clear separation of concerns and layered responsibility.
+Backend service built with FastAPI that provides authenticated endpoints for user management and AI-assisted text analysis. The API exposes endpoints for registration, authentication, profile access, and text analysis, returning structured insights such as summary, keywords, and sentiment.
 
 ---
 
-## Architecture Overview
+## Service Structure
 
-The application is organized into distinct layers:
+The codebase is organized into focused modules:
 
-- `main.py` – Application entry point and route registration
-- `database.py` – Database engine and session configuration
-- `models.py` – SQLAlchemy ORM models (domain layer)
-- `schemas.py` – Pydantic schemas for request/response validation
-- `security.py` – Password hashing utilities (bcrypt)
-- `auth.py` – JWT creation and validation logic
-- `routes.py` – API endpoint definitions and dependency wiring
-
-Each component has a clearly defined responsibility to maintain clarity, testability, and scalability.
-
----
-
-## Core Capabilities
-
-- User registration with hashed password storage
-- JWT-based authentication
-- Token validation and protected routes
-- Dependency-based authorization
-- Database integration via SQLAlchemy
-- Request validation using Pydantic
-- Clean session management pattern
+* **main.py** – Application entry point and router registration
+* **database.py** – SQLAlchemy engine and session configuration
+* **models.py** – ORM models representing application entities
+* **schemas.py** – Pydantic schemas used for request and response validation
+* **security.py** – Password hashing utilities (bcrypt)
+* **auth.py** – JWT generation and authentication helpers
+* **routes.py** – API endpoints and dependency wiring
+* **ai_service.py** – Integration with an external AI model for text analysis
 
 ---
 
-## Available API Endpoints
+## API Endpoints
 
-### `POST /users`
-Registers a new user account.
+**POST /users**
+Create a new user account.
 
-### `POST /login`
-Authenticates user credentials and returns a JWT access token.
+**POST /login**
+Authenticate a user and return a JWT access token.
 
-### `GET /me`
-Returns the authenticated user's profile.  
+**GET /me**
+Return the authenticated user profile.
 Requires a valid Bearer token.
 
-### `GET /health`
+**POST /ai/analyze**
+Analyze input text and return structured insights including summary, keywords, and sentiment.
+Requires authentication.
+
+**GET /health**
 Basic service health check endpoint.
 
 ---
 
-## Authentication Flow
+## Authentication
 
-1. A user registers through `/users`.
-2. Passwords are hashed using bcrypt before being stored.
-3. The user logs in via `/login`.
-4. A JWT access token is issued upon successful authentication.
-5. Protected endpoints (such as `/me`) require a valid Bearer token.
-6. The token is validated and decoded to resolve the current user context.
-
-This approach demonstrates secure credential handling and token-based authorization using dependency injection.
+Authentication is handled using JSON Web Tokens (JWT).
+Passwords are hashed with bcrypt before being stored.
+Protected routes resolve the authenticated user through dependency injection.
 
 ---
 
 ## Technology Stack
 
-- FastAPI
-- SQLAlchemy
-- Pydantic
-- Passlib (bcrypt)
-- Python-Jose (JWT)
-- SQLite (demonstration database)
-
----
-
-## Design Principles
-
-This project emphasizes:
-
-- Separation of concerns
-- Explicit domain modeling
-- Secure authentication design
-- Practical backend architecture
-- Readable and maintainable code
-
-The goal is to reflect real-world backend engineering practices rather than a minimal tutorial implementation.
+* Python
+* FastAPI
+* SQLAlchemy
+* Pydantic
+* Passlib (bcrypt)
+* Python-Jose (JWT)
+* OpenAI API
+* SQLite
